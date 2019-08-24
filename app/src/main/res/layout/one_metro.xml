@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/oneMetro"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/dot00"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/none"
+        android:src="@mipmap/circle_pink"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/dot01"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/dot01"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/none"
+        android:src="@mipmap/circle_pink"
+        app:layout_constraintLeft_toRightOf="@+id/dot00"
+        app:layout_constraintRight_toLeftOf="@id/dot02"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/dot02"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/none"
+        android:src="@mipmap/circle_pink"
+        app:layout_constraintLeft_toRightOf="@+id/dot01"
+        app:layout_constraintRight_toLeftOf="@id/dot03"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/dot03"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/none"
+        android:src="@mipmap/circle_pink"
+        app:layout_constraintLeft_toRightOf="@+id/dot02"
+        app:layout_constraintRight_toLeftOf="@id/dot04"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/dot04"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/none"
+        android:src="@mipmap/circle_pink"
+        app:layout_constraintLeft_toRightOf="@+id/dot03"
+        app:layout_constraintRight_toLeftOf="@id/dot05"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/dot05"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/none"
+        android:src="@mipmap/circle_pink"
+        app:layout_constraintLeft_toRightOf="@+id/dot04"
+        app:layout_constraintRight_toLeftOf="@id/dot06"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/dot06"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/none"
+        android:src="@mipmap/circle_pink"
+        app:layout_constraintLeft_toRightOf="@+id/dot05"
+        app:layout_constraintRight_toLeftOf="@id/dot07"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/dot07"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/none"
+        android:src="@mipmap/circle_red"
+        app:layout_constraintLeft_toRightOf="@+id/dot06"
+        app:layout_constraintRight_toLeftOf="@id/dot08"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/dot08"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/none"
+        android:src="@mipmap/circle_red2"
+        app:layout_constraintLeft_toRightOf="@+id/dot07"
+        app:layout_constraintRight_toLeftOf="@id/dot09"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/dot09"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/none"
+        android:src="@mipmap/circle_pink"
+        app:layout_constraintLeft_toRightOf="@+id/dot08"
+        app:layout_constraintRight_toLeftOf="@id/dot10"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/dot10"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/none"
+        android:src="@mipmap/circle_pink2"
+        app:layout_constraintLeft_toRightOf="@+id/dot09"
+        app:layout_constraintRight_toLeftOf="@id/dot11"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/dot11"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/none"
+        android:src="@mipmap/circle_red"
+        app:layout_constraintLeft_toRightOf="@+id/dot10"
+        app:layout_constraintRight_toLeftOf="@id/dot12"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/dot12"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/none"
+        android:src="@mipmap/circle_pink2"
+        app:layout_constraintLeft_toRightOf="@+id/dot11"
+        app:layout_constraintRight_toLeftOf="@id/dot13"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/dot13"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/none"
+        android:src="@mipmap/circle_pink2"
+        app:layout_constraintLeft_toRightOf="@+id/dot12"
+        app:layout_constraintRight_toLeftOf="@id/dot14"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/dot14"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/none"
+        android:src="@mipmap/circle_pink2"
+        app:layout_constraintLeft_toRightOf="@+id/dot13"
+        app:layout_constraintRight_toLeftOf="@id/dot15"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/dot15"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/none"
+        android:src="@mipmap/circle_pink2"
+        app:layout_constraintLeft_toRightOf="@id/dot14"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 2nd line dummy bar -->
+
+    <TextView
+        android:id="@+id/line_bar"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dot00" />
+
+    <!-- 3nd line       -->
+
+
+    <ImageView
+        android:id="@+id/soundType"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:contentDescription="@string/none"
+        android:src="@mipmap/say_hana"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/meter"
+        app:layout_constraintTop_toBottomOf="@id/line_bar" />
+    <TextView
+        android:id="@+id/meter"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:text="@string/meter"
+        android:textSize="32sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/soundType"
+        app:layout_constraintRight_toLeftOf="@id/speed"
+        app:layout_constraintTop_toBottomOf="@id/line_bar" />
+    <TextView
+        android:id="@+id/speed"
+        android:layout_width="72dp"
+        android:layout_height="wrap_content"
+        android:text="@string/none"
+        android:textSize="32sp"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/meter"
+        app:layout_constraintRight_toLeftOf="@+id/go"
+        app:layout_constraintTop_toBottomOf="@id/line_bar" />
+
+    <ImageView
+        android:id="@+id/go"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:contentDescription="@string/none"
+        android:src="@mipmap/go_green"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/speed"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line_bar" />
+
+</android.support.constraint.ConstraintLayout>
