@@ -1,21 +1,20 @@
 package com.urrecliner.andriod.multimetronome;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.media.AudioAttributes;
-import android.media.AudioFocusRequest;
-import android.media.AudioManager;
 import android.media.SoundPool;
-import android.os.Handler;
-import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
+import static com.urrecliner.andriod.multimetronome.Vars.beepSource;
+import static com.urrecliner.andriod.multimetronome.Vars.beepLoads;
+import static com.urrecliner.andriod.multimetronome.Vars.hanaSource;
+import static com.urrecliner.andriod.multimetronome.Vars.hanaLoads;
+import static com.urrecliner.andriod.multimetronome.Vars.mContext;
 import static com.urrecliner.andriod.multimetronome.Vars.sharedPreferences;
 
 
@@ -121,68 +120,11 @@ class Utils {
         return urls;
     }
 
-    AudioManager mAudioManager = null;
-    AudioFocusRequest mFocusGain = null;
-    TextToSpeech mTTS;
-
-    void ttsSpeak(String text) {
-        Log.w("TTS","ttsspeak");
-        initiateTTS();
-        final String t = text;
-        new Handler().postDelayed(new Runnable(){
-            @Override
-            public void run() {
-                Log.w("TTS1","ttsspeak");
-                try {
-                    readyAudioManager();
-                    mTTS.setPitch(1.4f);
-                    mTTS.setSpeechRate(1.4f);
-                    try {
-                        Log.w("TTS6","ttsspeak");
-                        mTTS.speak(t, TextToSpeech.QUEUE_ADD, null, TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID);
-                    } catch (Exception e) {
-                        log("speak", "justSpeak:" + e.toString());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }, 1000);
-    }
-
-    void initiateTTS() {
-        mTTS = new TextToSpeech(Vars.mContext, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if (status == TextToSpeech.SUCCESS) {
-                    int result = mTTS.setLanguage(Locale.KOREA);
-                    if (result == TextToSpeech.LANG_MISSING_DATA
-                            || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                        log("inittTS", "Language not supported");
-                    }
-                }
-            }
-        });
-    }
-
-    void readyAudioManager() {
-        if(mAudioManager == null) {
-            try {
-                mAudioManager = (AudioManager) Vars.mContext.getSystemService(Context.AUDIO_SERVICE);
-                mFocusGain = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK)
-                        .build();
-            } catch (Exception e) {
-                log("err", "mAudioManager Error " + e.toString());
-            }
-        }
-    }
-
-
     private SoundPool soundPool = null;
 
     void soundInitiate() {
 
-        SoundPool.Builder builder;
+//        SoundPool.Builder builder;
 //        AudioAttributes audioAttributes = new AudioAttributes.Builder()
 //                .setUsage(AudioAttributes.USAGE_MEDIA)
 //                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
@@ -199,38 +141,15 @@ class Utils {
                 .build();
         soundPool = new SoundPool.Builder().setAudioAttributes(attributes).setMaxStreams(5).build();
 
-//        sndTbl = new int[soundSource.length];
-//        sndTenTbl = new int[soundTenSource.length];
-//        sndShortTbl = new int[soundShort.length];
-//        sndSpecialTbl = new int[soundSpecial.length];
-//        log("s","sndTbl len "+soundSource.length+" sndTbl len "+ sndTbl.length);
-//        for (int i = 1; i < soundSource.length; i++) {
-//            log("s" + i,"sndTbl "+soundSource[i]);
-//            sndTbl[i] = soundPool.load(mContext, soundSource[i], 1);
-//            log("loaded","tbl"+sndTbl[i]);
-//        }
-//        for (int i = 1; i < soundTenSource.length; i++)
-//            sndTenTbl[i] = soundPool.load(mContext, soundTenSource[i], 1);
-//        for (int i = 1; i < soundShort.length; i++)
-//            sndShortTbl[i] = soundPool.load(mContext, soundShort[i], 1);
-//        for (int i = 0; i < soundSpecial.length; i++)
-//            sndSpecialTbl[i] = soundPool.load(mContext, soundSpecial[i], 1);
+        hanaLoads = new int [hanaSource.length];
+        beepLoads = new int [beepSource.length];
+        for (int i = 1; i < hanaSource.length; i++)
+            hanaLoads[i] = soundPool.load(mContext, hanaSource[i], 1);
+        for (int i = 1; i < beepSource.length; i++)
+            beepLoads[i] = soundPool.load(mContext, beepSource[i], 1);
     }
 
     void beepSound(int soundId, float volume) {
-//        if (soundPool == null) {
-//            soundInitiate();
-//            final int id = soundId;
-//            final float vol = volume;
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//                public void run() {
-//                    soundPool.play(soundId, volume, volume, 1, 0, speed);
-//                }
-//            }, 1000);
-//        }
-        if (soundPool == null)
-            log("sound"," is null");
         soundPool.play(soundId, volume, volume, 1, 0, 1);
     }
 

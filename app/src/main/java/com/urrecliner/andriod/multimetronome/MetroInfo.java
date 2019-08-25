@@ -5,8 +5,6 @@ public class MetroInfo {
     private int soundType;
     private int meter;
     private int speed;
-    private int mainBeat;
-    private int subBeat;
 
     public MetroInfo(int meter, int speed, int soundType) {
         this.meter = meter;
@@ -36,21 +34,5 @@ public class MetroInfo {
 
     public void setSpeed(int speed) {
         this.speed = speed;
-    }
-
-    public int getMainBeat() {
-        return mainBeat;
-    }
-
-    public void setMainBeat(int mainBeat) {
-        this.mainBeat = mainBeat;
-    }
-
-    public int getSubBeat() {
-        return subBeat;
-    }
-
-    public void setSubBeat(int subBeat) {
-        this.subBeat = subBeat;
     }
 }
