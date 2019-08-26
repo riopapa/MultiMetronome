@@ -4,24 +4,32 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static com.urrecliner.andriod.multimetronome.Vars.mActivity;
 import static com.urrecliner.andriod.multimetronome.Vars.mContext;
+import static com.urrecliner.andriod.multimetronome.Vars.meterLists;
+import static com.urrecliner.andriod.multimetronome.Vars.meterTexts;
 import static com.urrecliner.andriod.multimetronome.Vars.metroAdapter;
+import static com.urrecliner.andriod.multimetronome.Vars.metroInfos;
+import static com.urrecliner.andriod.multimetronome.Vars.tempoLists;
+import static com.urrecliner.andriod.multimetronome.Vars.tempos;
 import static com.urrecliner.andriod.multimetronome.Vars.utils;
 
 public class MainActivity extends AppCompatActivity {
 
-    ArrayList<MetroInfo> metroInfos;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        getSupportActionBar().setLogo(R.mipmap.multi_metronome);
+//        getSupportActionBar().setDisplayUseLogoEnabled(true);
+
         setContentView(R.layout.activity_main);
         mActivity = this;
         mContext = this;
@@ -31,32 +39,21 @@ public class MainActivity extends AppCompatActivity {
 
         utils = new Utils();
 
-        metroInfos = new ArrayList<>();
+        metroInfos = utils.readTables();
         utils.soundInitiate();
 
-        metroAdapter = new MetroAdapter(metroInfos);
+        meterLists = new ArrayList<>();
+        meterLists = Arrays.asList(meterTexts);
+//        for (int i = 0; i < meterTexts.length; i++) meterLists.add(meterTexts[i]);
+        tempoLists = new ArrayList<>();
+        for (int t:tempos) { tempoLists.add("" + t); }
+
+        metroAdapter = new MetroAdapter();
         recyclerView.setAdapter(metroAdapter);
 
 //        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
 //                mLinearLayoutManager.getOrientation());
 //        recyclerView.addItemDecoration(dividerItemDecoration);
-
-        MetroInfo metroInfo = new MetroInfo(1,120, 0);
-        metroInfos.add(metroInfo);
-        metroInfo = new MetroInfo(2,96, 1);
-        metroInfos.add(metroInfo);
-        metroInfo = new MetroInfo(3,90, 0);
-        metroInfos.add(metroInfo);
-        metroInfo = new MetroInfo(4,120, 1);
-        metroInfos.add(metroInfo);
-        metroInfo = new MetroInfo(4,128, 0);
-        metroInfos.add(metroInfo);
-        metroInfo = new MetroInfo(5,120, 0);
-        metroInfos.add(metroInfo);
-        metroInfo = new MetroInfo(6,90, 1);
-        metroInfos.add(metroInfo);
-        metroInfo = new MetroInfo(0,120, 0);
-        metroInfos.add(metroInfo);
 
     }
 
@@ -75,10 +72,9 @@ public class MainActivity extends AppCompatActivity {
                 metroInfos.add(metroInfo);
                 metroAdapter.notifyItemInserted(metroInfos.size());
                 metroAdapter.notifyItemRangeChanged(metroInfos.size(), metroInfos.size());
-                Log.w("add","returned");
                 return true;
             case R.id.action_stop:
-                    metroAdapter.stopHandler();
+                    metroAdapter.stopBeatPlay();
                     return true;
         }
         return super.onOptionsItemSelected(item);

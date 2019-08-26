@@ -1,38 +1,38 @@
 package com.urrecliner.andriod.multimetronome;
 
-public class MetroInfo {
+class MetroInfo {
 
     private int soundType;
     private int meter;
-    private int speed;
+    private int tempo;
 
-    public MetroInfo(int meter, int speed, int soundType) {
+    MetroInfo(int meter, int tempo, int soundType) {
         this.meter = meter;
-        this.speed = speed;
+        this.tempo = tempo;
         this.soundType = soundType;
     }
 
-    public int getSoundType() {
+    int getSoundType() {
         return soundType;
     }
 
-    public void setSoundType(int soundType) {
+    void setSoundType(int soundType) {
         this.soundType = soundType;
     }
 
-    public int getMeter() {
+    int getMeter() {
         return meter;
     }
 
-    public void setMeter(int meter) {
+    void setMeter(int meter) {
         this.meter = meter;
     }
 
-    public int getSpeed() {
-        return speed;
+    int getTempo() {
+        return tempo;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
+    void setTempo(int tempo) {
+        this.tempo = tempo;
     }
 }
