@@ -1,23 +1,23 @@
 package com.urrecliner.andriod.multimetronome;
 
-class MetroInfo {
+class Metro {
 
-    private int soundType;
+    private int hanaBeep;
     private int meter;
     private int tempo;
 
-    MetroInfo(int meter, int tempo, int soundType) {
+    Metro(int meter, int tempo, int hanaBeep) {
         this.meter = meter;
         this.tempo = tempo;
-        this.soundType = soundType;
+        this.hanaBeep = hanaBeep;
     }
 
-    int getSoundType() {
-        return soundType;
+    int getHanaBeep() {
+        return hanaBeep;
     }
 
-    void setSoundType(int soundType) {
-        this.soundType = soundType;
+    void setHanaBeep(int hanaBeep) {
+        this.hanaBeep = hanaBeep;
     }
 
     int getMeter() {

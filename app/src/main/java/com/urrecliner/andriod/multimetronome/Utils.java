@@ -1,8 +1,7 @@
 package com.urrecliner.andriod.multimetronome;
 
 import android.content.SharedPreferences;
-import android.media.AudioAttributes;
-import android.media.SoundPool;
+import android.media.MediaPlayer;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -13,12 +12,12 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.urrecliner.andriod.multimetronome.Vars.beepLoads;
+import static com.urrecliner.andriod.multimetronome.Vars.beepMedias;
 import static com.urrecliner.andriod.multimetronome.Vars.beepSource;
-import static com.urrecliner.andriod.multimetronome.Vars.hanaLoads;
+import static com.urrecliner.andriod.multimetronome.Vars.hanaMedias;
 import static com.urrecliner.andriod.multimetronome.Vars.hanaSource;
 import static com.urrecliner.andriod.multimetronome.Vars.mContext;
-import static com.urrecliner.andriod.multimetronome.Vars.metroInfos;
+import static com.urrecliner.andriod.multimetronome.Vars.metros;
 import static com.urrecliner.andriod.multimetronome.Vars.sharedPreferences;
 
 
@@ -36,48 +35,42 @@ class Utils {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
         Gson gson = new Gson();
-        String json = gson.toJson(metroInfos);
+        String json = gson.toJson(metros);
         prefsEditor.putString("metroInfo", json);
         prefsEditor.apply();
     }
 
-    ArrayList<MetroInfo> readTables() {
+    ArrayList<Metro> readTables() {
 
-        ArrayList<MetroInfo> list;
+        ArrayList<Metro> list;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("metroInfo", "");
         if (json.isEmpty()) {
-            list = new ArrayList<MetroInfo>();
+            list = new ArrayList<>();
         } else {
-            Type type = new TypeToken<List<MetroInfo>>() {
+            Type type = new TypeToken<List<Metro>>() {
             }.getType();
             list = gson.fromJson(json, type);
         }
         return list;
     }
 
-    private SoundPool soundPool = null;
-
     void soundInitiate() {
 
-        AudioAttributes attributes = new AudioAttributes.Builder()
-                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                .setFlags(AudioAttributes.FLAG_AUDIBILITY_ENFORCED)
-                .setUsage(AudioAttributes.USAGE_MEDIA)
-                .build();
-        soundPool = new SoundPool.Builder().setAudioAttributes(attributes).setMaxStreams(5).build();
+        hanaMedias = new MediaPlayer[hanaSource.length];
+        beepMedias = new MediaPlayer[beepSource.length];
+        for (int i = 1; i < hanaSource.length; i++) {
+            hanaMedias[i] = readyMedia(hanaSource[i]);
+        }
+        for (int i = 1; i < beepSource.length; i++) {
+            beepMedias[i] = readyMedia(beepSource[i]);
+        }
 
-        hanaLoads = new int[hanaSource.length];
-        beepLoads = new int[beepSource.length];
-        for (int i = 1; i < hanaSource.length; i++)
-            hanaLoads[i] = soundPool.load(mContext, hanaSource[i], 1);
-        for (int i = 1; i < beepSource.length; i++)
-            beepLoads[i] = soundPool.load(mContext, beepSource[i], 1);
     }
-
-    void beepSound(int soundId, float volume) {
-        soundPool.play(soundId, volume, volume, 1, 0, 1);
+    private MediaPlayer readyMedia(int rawId){
+        return MediaPlayer.create(mContext, rawId);
     }
+    void beepSound(MediaPlayer id) { id.start();}
 
 }

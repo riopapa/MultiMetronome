@@ -4,10 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 class Vars {
     static SharedPreferences sharedPreferences;
@@ -20,10 +20,8 @@ class Vars {
     static MetroAdapter metroAdapter;
     static Utils utils;
     static int mPos;
-    static Timer metroTimer;
     static boolean isRunning;
-
-    static ArrayList<MetroInfo> metroInfos;
+    static ArrayList<Metro> metros;
 
 
     static int[] dotRids = {R.id.dot00, R.id.dot01, R.id.dot02, R.id.dot03, R.id.dot04, R.id.dot05,
@@ -32,7 +30,7 @@ class Vars {
 
     static String[] meterTexts = { "2/2", "2/4", "3/4", "4/4", "4/4♫", "6/8", "6/8♫", "9/8", "12/8", "12/8♫" }; // ♫
 
-    static int[][] meterDots = {
+    static int[][] meterBeats = {
             { 11, 2, 11, 2} ,                                           // 0  2/2
             { 11, 2, 11, 2} ,                                           // 1  2/4
             { 11, 2, 3, 12,  2, 3} ,                                    // 2  3/4
@@ -53,7 +51,5 @@ class Vars {
     static int[] beepSource = {0,
             R.raw.beep_beep, R.raw.beep_click, R.raw.beep_ding, R.raw.beep_wood,
             R.raw.beep_notice, R.raw.beep_simple, R.raw.beep_pizzicato, R.raw.beep_wood};
-    static int [] hanaLoads, beepLoads, soundLoads;
-    static float [] volumeLoads;
-
+    static MediaPlayer[] hanaMedias, beepMedias, soundMedias;
 }

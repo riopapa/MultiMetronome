@@ -6,11 +6,8 @@ import android.widget.ImageView;
 
 import static com.urrecliner.andriod.multimetronome.Vars.dotRids;
 import static com.urrecliner.andriod.multimetronome.Vars.isRunning;
-import static com.urrecliner.andriod.multimetronome.Vars.mPos;
-import static com.urrecliner.andriod.multimetronome.Vars.metroAdapter;
-import static com.urrecliner.andriod.multimetronome.Vars.soundLoads;
+import static com.urrecliner.andriod.multimetronome.Vars.soundMedias;
 import static com.urrecliner.andriod.multimetronome.Vars.utils;
-import static com.urrecliner.andriod.multimetronome.Vars.volumeLoads;
 
 class BeatPlay extends Thread {
     private int interval;
@@ -22,7 +19,7 @@ class BeatPlay extends Thread {
     private ImageView [] mivDots = new ImageView[dotRids.length];
     private int meterDotCount;
 
-    public BeatPlay(int interval, int [] tagDots, ImageView [] mivDots, int [] meterDots ) {
+    public BeatPlay(int interval, int [] tagDots, ImageView [] mivDots, int [] meterDots) {
         this.interval = interval;
         meterDotCount = meterDots.length;
         System.arraycopy(tagDots, 0, this.tagDots, 0, tagDots.length );
@@ -43,7 +40,8 @@ class BeatPlay extends Thread {
                 Message msgOff = Message.obtain(); msgOff.obj = "f";
                 blinkDot.sendMessage(msgOff);
             }
-            utils.beepSound(soundLoads[nowPos], volumeLoads[nowPos]);
+//            utils.beepSound(soundMedias[nowPos], volumeLoads[nowPos]);
+            utils.beepSound(soundMedias[nowPos]);
             onViewDot = mivDots[nowPos];
             offViewDot = onViewDot;
             oldDot = tagDots[nowPos];
@@ -54,11 +52,6 @@ class BeatPlay extends Thread {
                 nowPos = 0;
             nextTime += interval;
         }
-    }
-
-    void quitPlay() {
-        metroAdapter.notifyItemChanged(mPos);
-        isRunning = false;
     }
 
     static final Handler blinkDot = new Handler() {

@@ -15,13 +15,14 @@ import static com.urrecliner.andriod.multimetronome.Vars.mContext;
 import static com.urrecliner.andriod.multimetronome.Vars.meterLists;
 import static com.urrecliner.andriod.multimetronome.Vars.meterTexts;
 import static com.urrecliner.andriod.multimetronome.Vars.metroAdapter;
-import static com.urrecliner.andriod.multimetronome.Vars.metroInfos;
+import static com.urrecliner.andriod.multimetronome.Vars.metros;
 import static com.urrecliner.andriod.multimetronome.Vars.tempoLists;
 import static com.urrecliner.andriod.multimetronome.Vars.tempos;
 import static com.urrecliner.andriod.multimetronome.Vars.utils;
 
 public class MainActivity extends AppCompatActivity {
 
+    final static String logId = "Metro";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         utils = new Utils();
 
-        metroInfos = utils.readTables();
+        metros = utils.readTables();
         utils.soundInitiate();
 
         meterLists = new ArrayList<>();
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         metroAdapter = new MetroAdapter();
         recyclerView.setAdapter(metroAdapter);
+        utils.log(logId,"Ready");
 
 //        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
 //                mLinearLayoutManager.getOrientation());
@@ -68,10 +70,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-                MetroInfo metroInfo = new MetroInfo(1,120, 1);
-                metroInfos.add(metroInfo);
-                metroAdapter.notifyItemInserted(metroInfos.size());
-                metroAdapter.notifyItemRangeChanged(metroInfos.size(), metroInfos.size());
+                Metro metro = new Metro(1,96, 1);
+                metros.add(metro);
+                metroAdapter.notifyItemInserted(metros.size());
+                metroAdapter.notifyItemRangeChanged(metros.size(), metros.size());
                 return true;
             case R.id.action_stop:
                     metroAdapter.stopBeatPlay();
