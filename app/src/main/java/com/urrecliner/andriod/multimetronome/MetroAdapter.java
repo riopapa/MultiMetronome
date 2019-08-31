@@ -74,7 +74,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                     if (hanaBeep > 2)
                         hanaBeep = 0;
                     metros.get(mPos).setHanaBeep(hanaBeep);
-                    utils.saveTables();
+                    utils.saveSharedPrefTables();
                     if (hanaBeep == 0)
                         ivHanaBeep.setImageResource(R.mipmap.say_hana);
                     else if (hanaBeep == 1)
@@ -115,7 +115,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     metros.get(mPos).setMeter(wheelIdx);
-                                    utils.saveTables();
+                                    utils.saveSharedPrefTables();
                                     tvMeter.setText(meterTexts[wheelIdx]);
                                     tvMeter.invalidate();
                                     metroAdapter.notifyItemChanged(mPos);
@@ -165,7 +165,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                                     String s;
                                     int val = tempos[wheelIdx];
                                     metros.get(mPos).setTempo(val);
-                                    utils.saveTables();
+                                    utils.saveSharedPrefTables();
                                     s = ""+val;
                                     tvTempo.setText(s);
                                     tvTempo.invalidate();
@@ -225,14 +225,16 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
         int count = meterBeats[meter].length;
         interval = 60000 / metros.get(mPos).getTempo();
         soundMedias = new MediaPlayer[count];
-
         switch (hanaBeep) {
             case 0:
                 setupHanaTable(meter, count);
+                break;
             case 1:
                 setupBeepTable(meter, count);
+                break;
             case 2:
                 setupBeep2Table(meter, count);
+                break;
         }
     }
 
@@ -267,7 +269,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                 soundMedias[i] = beepMedias[2];
             }
             else {
-                soundMedias[i] = beepMedias[4];
+                soundMedias[i] = beepMedias[3];
             }
         }
     }
@@ -279,10 +281,10 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                 soundMedias[i] = beepMedias[5];
             }
             else if (dot == 12 || dot == 13 || dot == 14) {
-                soundMedias[i] = beepMedias[6];
+                soundMedias[i] = beepMedias[4];
             }
             else {
-                soundMedias[i] = beepMedias[7];
+                soundMedias[i] = beepMedias[6];
             }
         }
     }
@@ -292,6 +294,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
         nowGo.setEnabled(false);
         int meter = metros.get(mPos).getMeter();
         beatPlay = new BeatPlay(interval, tagDots, mivDots, meterBeats[meter]);
+        utils.log("mPos "+mPos,">> "+metros.get(mPos).getMeter());
         beatPlay.start();
         nowGo.setEnabled(true);
     }
@@ -301,7 +304,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
             beatPlay.interrupt();
             nowGo.setImageResource(R.mipmap.go_green);
             metroAdapter.notifyItemChanged(mPos);
-            utils.log(logId," stop Beat "+mPos);
+            utils.log("mPos "+mPos,">> "+metros.get(mPos).getMeter());
             isRunning = false;
         }
     }
@@ -353,11 +356,11 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
 
         int color = (pos%2 == 0) ? Color.parseColor("#EFF0F1") : Color.parseColor("#eddada");
         holder.constraintLayout.setBackgroundColor(color);
-//        utils.log(logId, "onBind "+pos);
-        int size = meterBeats[meter].length;
         buildTagDots(meter);
+        int size = meterBeats[meter].length;
         for (idx = 0; idx < size; idx++) {
                 holder.ivDots[idx].setImageResource(tagDots[idx]);
+            holder.ivDots[idx].setVisibility(View.VISIBLE);
         }
         while (idx < dotMax) {
             holder.ivDots[idx].setVisibility(View.GONE);

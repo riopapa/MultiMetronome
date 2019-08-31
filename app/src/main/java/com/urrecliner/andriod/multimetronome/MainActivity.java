@@ -10,6 +10,10 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static com.urrecliner.andriod.multimetronome.Vars.beepMedias;
+import static com.urrecliner.andriod.multimetronome.Vars.beepSource;
+import static com.urrecliner.andriod.multimetronome.Vars.hanaMedias;
+import static com.urrecliner.andriod.multimetronome.Vars.hanaSource;
 import static com.urrecliner.andriod.multimetronome.Vars.mActivity;
 import static com.urrecliner.andriod.multimetronome.Vars.mContext;
 import static com.urrecliner.andriod.multimetronome.Vars.meterLists;
@@ -40,12 +44,11 @@ public class MainActivity extends AppCompatActivity {
 
         utils = new Utils();
 
-        metros = utils.readTables();
+        metros = utils.readSharedPrefTables();
         utils.soundInitiate();
 
         meterLists = new ArrayList<>();
         meterLists = Arrays.asList(meterTexts);
-//        for (int i = 0; i < meterTexts.length; i++) meterLists.add(meterTexts[i]);
         tempoLists = new ArrayList<>();
         for (int t:tempos) { tempoLists.add("" + t); }
 
@@ -82,4 +85,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        for (int i = 1; i < hanaSource.length; i++) {
+            hanaMedias[i].release();
+        }
+        for (int i = 1; i < beepSource.length; i++) {
+            beepMedias[i].release();
+        }
+    }
 }

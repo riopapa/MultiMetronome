@@ -2,6 +2,7 @@ package com.urrecliner.andriod.multimetronome;
 
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -24,13 +25,22 @@ import static com.urrecliner.andriod.multimetronome.Vars.sharedPreferences;
 class Utils {
 
     void log(String tag, String text) {
+        String where = " ";
         StackTraceElement[] traces;
         traces = Thread.currentThread().getStackTrace();
-        String where = " " + traces[5].getMethodName() + " > " + traces[4].getMethodName() + " > " + traces[3].getMethodName() + " #" + traces[3].getLineNumber();
+        if (traces.length > 5) {
+            where += traces[5].getMethodName() + " > " + traces[4].getMethodName() + " > " + traces[3].getMethodName() + " #" + traces[3].getLineNumber();
+        }
+        else if (traces.length > 4){
+            where += traces[4].getMethodName() + " > " + traces[3].getMethodName() + " #" + traces[3].getLineNumber();
+        }
+        else {
+            where += traces[3].getMethodName() + " #" + traces[2].getLineNumber();
+        }
         Log.w(tag, where + " " + text);
     }
 
-    void saveTables() {
+    void saveSharedPrefTables() {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor prefsEditor = sharedPreferences.edit();
@@ -40,7 +50,7 @@ class Utils {
         prefsEditor.apply();
     }
 
-    ArrayList<Metro> readTables() {
+    ArrayList<Metro> readSharedPrefTables() {
 
         ArrayList<Metro> list;
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
@@ -71,6 +81,28 @@ class Utils {
     private MediaPlayer readyMedia(int rawId){
         return MediaPlayer.create(mContext, rawId);
     }
-    void beepSound(MediaPlayer id) { id.start();}
+    private long time;
+    private boolean isPlaying;
+    boolean beepSound(MediaPlayer id) {
+//        long now = System.currentTimeMillis();
+//        utils.log("time diff ", "" + (now - time));
+//        time = now;
+        isPlaying = true;
+//        utils.log("beep",""+isPlaying);
+        id.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                isPlaying = false;
+//                utils.log("beep",""+isPlaying);
+            }
+        });
+        id.start();
+//        utils.log("beep",""+isPlaying);
+        while (isPlaying) {
+            SystemClock.sleep(10);
+//            utils.log("beep",""+isPlaying);
+        }
+        return true;
+    }
 
 }
