@@ -20,6 +20,7 @@ import static com.urrecliner.andriod.multimetronome.Vars.hanaSource;
 import static com.urrecliner.andriod.multimetronome.Vars.mContext;
 import static com.urrecliner.andriod.multimetronome.Vars.metros;
 import static com.urrecliner.andriod.multimetronome.Vars.sharedPreferences;
+import static com.urrecliner.andriod.multimetronome.Vars.utils;
 
 
 class Utils {
@@ -81,14 +82,18 @@ class Utils {
     private MediaPlayer readyMedia(int rawId){
         return MediaPlayer.create(mContext, rawId);
     }
-    private long time;
     private boolean isPlaying;
-    boolean beepSound(MediaPlayer id) {
+    long time;
+    boolean beepSound(MediaPlayer id, long nextTime) {
+
 //        long now = System.currentTimeMillis();
-//        utils.log("time diff ", "" + (now - time));
-//        time = now;
+//        while (now < nextTime) {
+//            SystemClock.sleep(10);
+//            now = System.currentTimeMillis();
+//        }
+//        utils.log("time diff ", "              " + (now - time));
         isPlaying = true;
-//        utils.log("beep",""+isPlaying);
+        utils.log("beep",""+isPlaying);
         id.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
@@ -99,7 +104,7 @@ class Utils {
         id.start();
 //        utils.log("beep",""+isPlaying);
         while (isPlaying) {
-            SystemClock.sleep(10);
+            SystemClock.sleep(2);
 //            utils.log("beep",""+isPlaying);
         }
         return true;

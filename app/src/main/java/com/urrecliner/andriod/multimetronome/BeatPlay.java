@@ -33,25 +33,25 @@ class BeatPlay extends Thread {
         long nextTime = System.currentTimeMillis();
         while (isRunning) {
 //            Log.w("time", " nextTime "+ nextTime +" diff "+diff);
-            nextTime += interval;
-            if (offViewDot != null) {
-                Message msgOff = Message.obtain(); msgOff.obj = "f";
-                blinkDot.sendMessage(msgOff);
-            }
+//            if (offViewDot != null) {
+//            }
             onViewDot = mivDots[nowPos];
             Message msgOn = Message.obtain(); msgOn.obj = "o";
             blinkDot.sendMessage(msgOn);
-            utils.beepSound(soundMedias[nowPos]);
+            boolean dummy = utils.beepSound(soundMedias[nowPos], nextTime);
             offViewDot = onViewDot;
             oldDot = tagDots[nowPos];
+            long diff = nextTime - System.currentTimeMillis();
+            if (diff >  5) {
+//                utils.log("diff",""+diff);
+                try { Thread.sleep(diff); } catch (InterruptedException e) {}
+            }
+            Message msgOff = Message.obtain(); msgOff.obj = "f";
+            blinkDot.sendMessage(msgOff);
             nowPos++;
             if (nowPos >= loopCount)
                 nowPos = 0;
-            long diff = nextTime - System.currentTimeMillis();
-            if (diff >  3) {
-                utils.log("diff",""+diff);
-                try { Thread.sleep(diff); } catch (InterruptedException e) {}
-            }
+            nextTime += interval;
         }
     }
 

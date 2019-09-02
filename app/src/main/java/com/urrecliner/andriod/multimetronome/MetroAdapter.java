@@ -269,7 +269,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                 soundMedias[i] = beepMedias[2];
             }
             else {
-                soundMedias[i] = beepMedias[3];
+                soundMedias[i] = beepMedias[9];
             }
         }
     }
@@ -284,7 +284,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                 soundMedias[i] = beepMedias[4];
             }
             else {
-                soundMedias[i] = beepMedias[6];
+                soundMedias[i] = beepMedias[9];
             }
         }
     }
@@ -294,7 +294,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
         nowGo.setEnabled(false);
         int meter = metros.get(mPos).getMeter();
         beatPlay = new BeatPlay(interval, tagDots, mivDots, meterBeats[meter]);
-        utils.log("mPos "+mPos,">> "+metros.get(mPos).getMeter());
+//        utils.log("mPos "+mPos,">> "+metros.get(mPos).getMeter());
         beatPlay.start();
         nowGo.setEnabled(true);
     }
@@ -304,7 +304,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
             beatPlay.interrupt();
             nowGo.setImageResource(R.mipmap.go_green);
             metroAdapter.notifyItemChanged(mPos);
-            utils.log("mPos "+mPos,">> "+metros.get(mPos).getMeter());
+//            utils.log("mPos "+mPos,">> "+metros.get(mPos).getMeter());
             isRunning = false;
         }
     }
