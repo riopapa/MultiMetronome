@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="soundType">
+        <item>@mipmap/say_hana</item>
+        <item>@mipmap/say_ticktick</item>
+        <item>@mipmap/say_tooktook</item>
+    </array>
+
+</resources>

@@ -2,6 +2,7 @@ package com.urrecliner.andriod.multimetronome;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
@@ -35,15 +36,17 @@ import static com.urrecliner.andriod.multimetronome.Vars.utils;
 
 public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHolder> {
 
-    final static String logId = "adapter";
+//    final static String logId = "adapter";
     private ImageView [] mivDots;
     private int [] tagDots;
     private int interval;
     private ImageView nowGo, nowStop;
+    private TypedArray soundTypes;
 
     MetroAdapter() {
         mivDots = new ImageView[dotRids.length];
         tagDots = new int[dotRids.length];
+        soundTypes = mActivity.getResources().obtainTypedArray(R.array.soundType);
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -55,6 +58,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
         ImageView [] ivDots = new ImageView[dotRids.length];
         ConstraintLayout constraintLayout;
         int wheelIdx;
+
 
         CustomViewHolder(View view) {
             super(view);
@@ -73,13 +77,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                         hanaBeep = 0;
                     metros.get(mPos).setHanaBeep(hanaBeep);
                     utils.saveSharedPrefTables();
-                    if (hanaBeep == 0)
-                        ivHanaBeep.setImageResource(R.mipmap.say_hana);
-                    else if (hanaBeep == 1)
-                        ivHanaBeep.setImageResource(R.mipmap.say_ticktick);
-                    else {
-                        ivHanaBeep.setImageResource(R.mipmap.say_tooktook);
-                    }
+                    ivHanaBeep.setImageResource(soundTypes.getResourceId(hanaBeep, 0));
                     ivHanaBeep.invalidate();
                 }
             });
@@ -92,7 +90,6 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                     mPos = getAdapterPosition();
                     final Metro metro = metros.get(mPos);
                     android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(mActivity);
-//                    LayoutInflater inflater = mActivity.getLayoutInflater();
                     View theView = View.inflate(mContext, R.layout.wheel_view, null);
                     WheelView wV = theView.findViewById(R.id.wheel);
                     wV.setItems(meterLists);
@@ -108,7 +105,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                     });
 
                     builder.setView(theView)
-                            .setPositiveButton("이걸로",new DialogInterface.OnClickListener() {
+                            .setPositiveButton("이 박자로 하지요",new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     metros.get(mPos).setMeter(wheelIdx);
@@ -117,12 +114,20 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                                     tvMeter.invalidate();
                                     metroAdapter.notifyItemChanged(mPos);
                                 }
-                            }).setNegativeButton("아니", new DialogInterface.OnClickListener() {
+                            })
+                            .setNegativeButton("아니", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) { }
+                    });
+                    final android.support.v7.app.AlertDialog dialog = builder.create();
+                    dialog.setOnShowListener( new DialogInterface.OnShowListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        public void onShow(DialogInterface arg0) {
+                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(24);
                         }
                     });
-                    builder.show();
+                    dialog.show();
                 }
             });
 
@@ -134,9 +139,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                     mPos = getAdapterPosition();
                     final Metro metro = metros.get(mPos);
                     android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(mActivity);
-//                    LayoutInflater inflater = mActivity.getLayoutInflater();
                     View theView = View.inflate(mContext, R.layout.wheel_view, null);
-
                     WheelView wV = theView.findViewById(R.id.wheel);
                     wV.setItems(tempoLists);
                     int tempo = metro.getTempo();
@@ -155,7 +158,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                     });
 
                     builder.setView(theView)
-                            .setPositiveButton("이걸로",new DialogInterface.OnClickListener() {
+                            .setPositiveButton("이 빠르기로 하지요",new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     String s;
@@ -165,15 +168,21 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                                     s = ""+val;
                                     tvTempo.setText(s);
                                     tvTempo.invalidate();
-
                                 }
                             })
                             .setNegativeButton("아니", new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                }
+                                public void onClick(DialogInterface dialog, int which) { }
                             });
-                    builder.show();
+                   final android.support.v7.app.AlertDialog dialog = builder.create();
+                    dialog.setOnShowListener( new DialogInterface.OnShowListener() {
+                        @Override
+                        public void onShow(DialogInterface arg0) {
+                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextSize(24);
+                        }
+                    });
+                    dialog.show();
                 }
             });
 
@@ -182,20 +191,16 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                 @Override
                 public void onClick(View view) {
                     mPos = getAdapterPosition();
-//                    nowGo = view.findViewById(R.id.go);
-//                    nowStop = view.findViewById(R.id.stop);
                     for (int idx = 0; idx < dotRids.length; idx++) {
                         ivDots[idx] = itemView.findViewById(dotRids[idx]);
                         mivDots[idx] = itemView.findViewById(dotRids[idx]);
                     }
-                    int meter = metros.get(mPos).getMeter();
-                    buildTagDots(meter);
+                    buildTagDots(metros.get(mPos).getMeter());
                     isRunning = true;
                     ivGo.setVisibility(View.GONE);
                     ivStop.setVisibility(View.VISIBLE);
                     nowGo = ivGo;
                     nowStop = ivStop;
-//                    nowGo.setImageResource(R.mipmap.go_red);
                     setupSoundTable();
                     startBeatPlay();
                 }
