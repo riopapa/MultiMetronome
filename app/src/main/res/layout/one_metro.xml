@@ -34,7 +34,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:contentDescription="@string/none"
-        android:src="@mipmap/circle_pink"
+        android:src="@mipmap/circle_red_yellow"
         app:layout_constraintLeft_toRightOf="@+id/dot01"
         app:layout_constraintRight_toLeftOf="@id/dot03"
         app:layout_constraintTop_toTopOf="parent" />
@@ -84,7 +84,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:contentDescription="@string/none"
-        android:src="@mipmap/circle_red"
+        android:src="@mipmap/circle_red_big"
         app:layout_constraintLeft_toRightOf="@+id/dot06"
         app:layout_constraintRight_toLeftOf="@id/dot08"
         app:layout_constraintTop_toTopOf="parent" />
@@ -94,7 +94,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:contentDescription="@string/none"
-        android:src="@mipmap/circle_red"
+        android:src="@mipmap/circle_red_big"
         app:layout_constraintLeft_toRightOf="@+id/dot07"
         app:layout_constraintRight_toLeftOf="@id/dot09"
         app:layout_constraintTop_toTopOf="parent" />
@@ -124,7 +124,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:contentDescription="@string/none"
-        android:src="@mipmap/circle_red"
+        android:src="@mipmap/circle_red_big"
         app:layout_constraintLeft_toRightOf="@+id/dot10"
         app:layout_constraintRight_toLeftOf="@id/dot12"
         app:layout_constraintTop_toTopOf="parent" />
@@ -188,7 +188,7 @@
         android:layout_height="64dp"
         android:contentDescription="@string/none"
         android:src="@mipmap/say_hana"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/stop"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/meter"
         app:layout_constraintTop_toBottomOf="@id/line_bar" />
@@ -200,7 +200,7 @@
         android:textSize="28sp"
         android:textColor="@color/black"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/stop"
         app:layout_constraintLeft_toRightOf="@id/hanaBeep"
         app:layout_constraintRight_toLeftOf="@id/tempo"
         app:layout_constraintTop_toBottomOf="@id/line_bar" />
@@ -213,7 +213,7 @@
         android:textColor="@color/black"
         android:foregroundGravity="center"
         android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/stop"
         app:layout_constraintLeft_toRightOf="@+id/meter"
         app:layout_constraintRight_toLeftOf="@+id/go"
         app:layout_constraintTop_toBottomOf="@id/line_bar" />
@@ -224,9 +224,21 @@
         android:layout_height="32dp"
         android:contentDescription="@string/none"
         android:src="@mipmap/go_green"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/stop"
         app:layout_constraintLeft_toRightOf="@id/tempo"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/line_bar" />
+
+
+    <ImageView
+        android:id="@+id/stop"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:contentDescription="@string/none"
+        android:src="@mipmap/stop_red"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tempo" />
 
 </android.support.constraint.ConstraintLayout>

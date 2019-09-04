@@ -20,6 +20,7 @@ class Vars {
     static MetroAdapter metroAdapter;
     static Utils utils;
     static int mPos;
+    static int loopCount;
     static boolean isRunning;
     static ArrayList<Metro> metros;
 
@@ -52,4 +53,5 @@ class Vars {
             R.raw.beep_beep, R.raw.beep_click, R.raw.beep_ding, R.raw.beep_wood, R.raw.beep_notice,
             R.raw.beep_simple, R.raw.beep_pizzicato, R.raw.beep_wood, R.raw.beep_metro};
     static MediaPlayer[] hanaMedias, beepMedias, soundMedias;
+    static float [] soundVolumes;
 }
