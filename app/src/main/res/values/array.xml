@@ -3,6 +3,7 @@
 
     <array name="soundType">
         <item>@mipmap/say_hana</item>
+        <item>@mipmap/say_one</item>
         <item>@mipmap/say_ticktick</item>
         <item>@mipmap/say_tooktook</item>
     </array>
