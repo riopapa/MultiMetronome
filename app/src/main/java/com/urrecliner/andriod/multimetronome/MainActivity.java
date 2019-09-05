@@ -1,5 +1,6 @@
 package com.urrecliner.andriod.multimetronome;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,18 +11,18 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static com.urrecliner.andriod.multimetronome.Vars.beepMedias;
-import static com.urrecliner.andriod.multimetronome.Vars.beepSource;
 import static com.urrecliner.andriod.multimetronome.Vars.hanaMedias;
-import static com.urrecliner.andriod.multimetronome.Vars.hanaSource;
 import static com.urrecliner.andriod.multimetronome.Vars.mActivity;
 import static com.urrecliner.andriod.multimetronome.Vars.mContext;
 import static com.urrecliner.andriod.multimetronome.Vars.meterLists;
 import static com.urrecliner.andriod.multimetronome.Vars.meterTexts;
 import static com.urrecliner.andriod.multimetronome.Vars.metroAdapter;
 import static com.urrecliner.andriod.multimetronome.Vars.metros;
+import static com.urrecliner.andriod.multimetronome.Vars.oneMedias;
 import static com.urrecliner.andriod.multimetronome.Vars.tempoLists;
 import static com.urrecliner.andriod.multimetronome.Vars.tempos;
+import static com.urrecliner.andriod.multimetronome.Vars.beep1Medias;
+import static com.urrecliner.andriod.multimetronome.Vars.beep2Medias;
 import static com.urrecliner.andriod.multimetronome.Vars.utils;
 
 public class MainActivity extends AppCompatActivity {
@@ -88,11 +89,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        for (int i = 1; i < hanaSource.length; i++) {
-            hanaMedias[i].release();
-        }
-        for (int i = 1; i < beepSource.length; i++) {
-            beepMedias[i].release();
-        }
+        for (MediaPlayer mp : hanaMedias) { mp.release(); }
+        for (MediaPlayer mp : oneMedias) { mp.release(); }
+        for (MediaPlayer mp : beep1Medias) { mp.release(); }
+        for (MediaPlayer mp : beep2Medias) { mp.release(); }
     }
 }

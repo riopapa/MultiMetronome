@@ -175,7 +175,6 @@
         android:id="@+id/line_bar"
         android:layout_width="match_parent"
         android:layout_height="4dp"
-        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dot00" />
@@ -188,7 +187,7 @@
         android:layout_height="64dp"
         android:contentDescription="@string/none"
         android:src="@mipmap/say_hana"
-        app:layout_constraintBottom_toTopOf="@id/stop"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/meter"
         app:layout_constraintTop_toBottomOf="@id/line_bar" />
@@ -198,9 +197,9 @@
         android:layout_height="wrap_content"
         android:text="@string/meter"
         android:textSize="28sp"
+        android:gravity="center"
         android:textColor="@color/black"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintBottom_toTopOf="@id/stop"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/hanaBeep"
         app:layout_constraintRight_toLeftOf="@id/tempo"
         app:layout_constraintTop_toBottomOf="@id/line_bar" />
@@ -211,9 +210,8 @@
         android:text="@string/none"
         android:textSize="28sp"
         android:textColor="@color/black"
-        android:foregroundGravity="center"
         android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@id/stop"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/meter"
         app:layout_constraintRight_toLeftOf="@+id/go"
         app:layout_constraintTop_toBottomOf="@id/line_bar" />
@@ -224,21 +222,20 @@
         android:layout_height="32dp"
         android:contentDescription="@string/none"
         android:src="@mipmap/go_green"
-        app:layout_constraintBottom_toTopOf="@id/stop"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/tempo"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/stop"
         app:layout_constraintTop_toBottomOf="@id/line_bar" />
-
 
     <ImageView
         android:id="@+id/stop"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:contentDescription="@string/none"
         android:src="@mipmap/stop_red"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/go"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tempo" />
+        app:layout_constraintTop_toBottomOf="@id/line_bar" />
 
 </android.support.constraint.ConstraintLayout>

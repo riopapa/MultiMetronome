@@ -12,13 +12,17 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.urrecliner.andriod.multimetronome.Vars.beepMedias;
-import static com.urrecliner.andriod.multimetronome.Vars.beepSource;
 import static com.urrecliner.andriod.multimetronome.Vars.hanaMedias;
-import static com.urrecliner.andriod.multimetronome.Vars.hanaSource;
+import static com.urrecliner.andriod.multimetronome.Vars.rawHana;
 import static com.urrecliner.andriod.multimetronome.Vars.mContext;
 import static com.urrecliner.andriod.multimetronome.Vars.metros;
+import static com.urrecliner.andriod.multimetronome.Vars.oneMedias;
+import static com.urrecliner.andriod.multimetronome.Vars.rawOne;
 import static com.urrecliner.andriod.multimetronome.Vars.sharedPreferences;
+import static com.urrecliner.andriod.multimetronome.Vars.beep1Medias;
+import static com.urrecliner.andriod.multimetronome.Vars.rawBeep1;
+import static com.urrecliner.andriod.multimetronome.Vars.beep2Medias;
+import static com.urrecliner.andriod.multimetronome.Vars.rawBeep2;
 
 
 class Utils {
@@ -67,13 +71,21 @@ class Utils {
 
     void soundInitiate() {
 
-        hanaMedias = new MediaPlayer[hanaSource.length];
-        beepMedias = new MediaPlayer[beepSource.length];
-        for (int i = 1; i < hanaSource.length; i++) {
-            hanaMedias[i] = readyMedia(hanaSource[i]);
+        hanaMedias = new MediaPlayer[rawHana.length];
+        for (int i = 1; i < rawHana.length; i++) {
+            hanaMedias[i] = readyMedia(rawHana[i]);
         }
-        for (int i = 1; i < beepSource.length; i++) {
-            beepMedias[i] = readyMedia(beepSource[i]);
+        oneMedias = new MediaPlayer[rawOne.length];
+        for (int i = 1; i < rawOne.length; i++) {
+            oneMedias[i] = readyMedia(rawOne[i]);
+        }
+        beep1Medias = new MediaPlayer[rawBeep1.length];
+        for (int i = 1; i < rawBeep1.length; i++) {
+            beep1Medias[i] = readyMedia(rawBeep1[i]);
+        }
+        beep2Medias = new MediaPlayer[rawBeep2.length];
+        for (int i = 1; i < rawBeep2.length; i++) {
+            beep2Medias[i] = readyMedia(rawBeep2[i]);
         }
     }
 
@@ -82,7 +94,6 @@ class Utils {
     }
 
     void beepSound(MediaPlayer id, float volume) {
-
         id.setVolume(volume, volume);
         id.start();
     }

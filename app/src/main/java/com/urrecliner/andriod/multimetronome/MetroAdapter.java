@@ -14,7 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import static com.urrecliner.andriod.multimetronome.Vars.beepMedias;
+import static com.urrecliner.andriod.multimetronome.Vars.beep1Medias;
+import static com.urrecliner.andriod.multimetronome.Vars.beep2Medias;
 import static com.urrecliner.andriod.multimetronome.Vars.dotRids;
 import static com.urrecliner.andriod.multimetronome.Vars.hanaMedias;
 import static com.urrecliner.andriod.multimetronome.Vars.isRunning;
@@ -27,6 +28,7 @@ import static com.urrecliner.andriod.multimetronome.Vars.meterLists;
 import static com.urrecliner.andriod.multimetronome.Vars.meterTexts;
 import static com.urrecliner.andriod.multimetronome.Vars.metroAdapter;
 import static com.urrecliner.andriod.multimetronome.Vars.metros;
+import static com.urrecliner.andriod.multimetronome.Vars.oneMedias;
 import static com.urrecliner.andriod.multimetronome.Vars.soundMedias;
 import static com.urrecliner.andriod.multimetronome.Vars.soundVolumes;
 import static com.urrecliner.andriod.multimetronome.Vars.tempoLists;
@@ -72,9 +74,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                 public void onClick(View view) {
                     stopBeatPlay();
                     mPos = getAdapterPosition();
-                    int hanaBeep = metros.get(mPos).getHanaBeep() + 1;
-                    if (hanaBeep > 2)
-                        hanaBeep = 0;
+                    int hanaBeep = (metros.get(mPos).getHanaBeep() + 1) % 4;
                     metros.get(mPos).setHanaBeep(hanaBeep);
                     utils.saveSharedPrefTables();
                     ivHanaBeep.setImageResource(soundTypes.getResourceId(hanaBeep, 0));
@@ -235,81 +235,52 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
         soundVolumes = new float[loopCount];
         switch (hanaBeep) {
             case 0:
-                setupHanaTable(meter);
-                break;
             case 1:
-                setupBeepTick(meter);
+                setupOneHana(meter, hanaBeep);
                 break;
             case 2:
-                setupBeepTook(meter);
+            case 3:
+                setupBeep12(meter, hanaBeep);
                 break;
         }
     }
 
-    private void setupHanaTable(int meter) {
+    private void setupOneHana(int meter, int hanaBeep) {
         for (int i = 0; i < loopCount; i++) {
             int dot = meterBeats[meter][i];
-            if (dot == 11) {
-                soundMedias[i] = hanaMedias[1];
-                soundVolumes[i] = highVolume;
-            }
-            else if (dot == 12) {
-                soundMedias[i] = hanaMedias[2];
-                soundVolumes[i] = highVolume;
-            }
-            else if (dot == 13) {
-                soundMedias[i] = hanaMedias[3];
-                soundVolumes[i] = highVolume;
-            }
-            else if (dot == 14) {
-                soundMedias[i] = hanaMedias[4];
+            if (dot > 10) {
+                soundMedias[i] = (hanaBeep == 0) ? hanaMedias[dot - 10] : oneMedias[dot - 10];
                 soundVolumes[i] = highVolume;
             }
             else {
-                soundMedias[i] = hanaMedias[dot];
+                soundMedias[i] = (hanaBeep == 0) ? hanaMedias[dot] : oneMedias[dot];
                 soundVolumes[i] = lowVolume;
             }
         }
     }
 
-    private void setupBeepTick(int meter) {
+    private void setupBeep12(int meter, int hanaBeep) {
         for (int i = 0; i < loopCount; i++) {
             int dot = meterBeats[meter][i];
             if (dot == 11) {
-                soundMedias[i] = beepMedias[5];
+                soundMedias[i] = (hanaBeep == 2) ? beep1Medias[1] : beep2Medias[1];
                 soundVolumes[i] = highVolume;
             }
             else if (dot == 12 || dot == 13 || dot == 14) {
-                soundMedias[i] = beepMedias[2];
+                soundMedias[i] = (hanaBeep == 2) ? beep1Medias[2] : beep2Medias[2];
                 soundVolumes[i] = highVolume;
             }
             else {
-                soundMedias[i] = beepMedias[9];
+                soundMedias[i] = (hanaBeep == 2) ? beep1Medias[3] : beep2Medias[3];
                 soundVolumes[i] = lowVolume;
             }
         }
     }
 
-    private void setupBeepTook(int meter) {
-        for (int i = 0; i < loopCount; i++) {
-            int dot = meterBeats[meter][i];
-            if (dot == 11) {
-                soundMedias[i] = beepMedias[7];
-                soundVolumes[i] = highVolume;
-            }
-            else if (dot == 12 || dot == 13 || dot == 14) {
-                soundMedias[i] = beepMedias[6];
-                soundVolumes[i] = highVolume;
-            }
-            else {
-                soundMedias[i] = beepMedias[9];
-                soundVolumes[i] = lowVolume;
-            }
-        }
-    }
-
-    private final float highVolume = (float) (1 - (Math.log(1) / Math.log(10)));
-    private final float lowVolume = (float) (1 - (Math.log(5) / Math.log(10)));
+//    private final float highVolume = (float) (1 - (Math.log(1) / Math.log(10)));
+//    private final float lowVolume = (float) (1 - (Math.log(4) / Math.log(10)));
+    private final float highVolume = 1.0f;
+    private final float lowVolume = 0.4f;
 
     private BeatPlay beatPlay = null;
     private void startBeatPlay() {
@@ -388,17 +359,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
             holder.ivDots[idx].setVisibility(View.GONE);
             idx++;
         }
-        switch (hanaBeep) {
-            case 0:
-                holder.ivHanaBeep.setImageResource(R.mipmap.say_hana);
-                break;
-            case 1:
-                holder.ivHanaBeep.setImageResource(R.mipmap.say_ticktick);
-                break;
-            case 2:
-                holder.ivHanaBeep.setImageResource(R.mipmap.say_tooktook);
-                break;
-        }
+        holder.ivHanaBeep.setImageResource(soundTypes.getResourceId(hanaBeep, 0));
         holder.tvMeter.setText(meterTexts[meter]);
         holder.tvTempo.setText(String.valueOf(tempo));
         holder.ivStop.setVisibility(View.GONE);
