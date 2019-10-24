@@ -62,7 +62,7 @@ class BeatPlay extends Thread {
         public void handleMessage(Message msg) {
             switch (msg.obj.toString()) {
                 case "o":
-                    onViewDot.setImageResource(R.mipmap.circle_blue);
+                    onViewDot.setImageResource(R.mipmap.now_mark);
                     onViewDot.invalidate();
                     break;
                 case "f":
