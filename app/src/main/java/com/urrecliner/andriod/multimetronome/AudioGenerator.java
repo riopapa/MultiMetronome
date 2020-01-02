@@ -56,8 +56,12 @@ public class AudioGenerator {
     }
     
     public void destroyAudioTrack() {
-    	audioTrack.stop();
-    	audioTrack.release();
+        try {
+            audioTrack.stop();
+            audioTrack.release();
+        } catch (Exception e) {
+            //
+        }
     }
     
 }

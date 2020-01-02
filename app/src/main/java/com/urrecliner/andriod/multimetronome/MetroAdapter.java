@@ -164,8 +164,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
             ivGo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (isRunning)
-                        return;
+                    stopBeatPlay();
                     mPos = getAdapterPosition();
                     for (int idx = 0; idx < dotRids.length; idx++) {
                         ivDots[idx] = itemView.findViewById(dotRids[idx]);
@@ -231,7 +230,6 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                     iV.invalidate();
                 }
                 iV = null;
-
                 break;
         }
     }
@@ -254,8 +252,9 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
     }
 
     void stopBeatPlay() {
-        if (isRunning) {
+        if (beatPlay != null)
             beatPlay.stop();
+        if (isRunning) {
             nowGo.setImageResource(R.mipmap.go_green);
             metroAdapter.notifyItemChanged(mPos);
 //            utils.log("mPos "+mPos,">> "+metroInfos.get(mPos).getBeatIndex());

@@ -59,7 +59,8 @@ class BeatPlay extends AsyncTask<Void, Void, String> {
 
     void stop() {
         isRunning = false;
-        audioGenerator.destroyAudioTrack();
+        if (audioGenerator != null)
+            audioGenerator.destroyAudioTrack();
         Message msg = new Message();
         msg.obj = "x0";
         mHandler.sendMessage(msg);
