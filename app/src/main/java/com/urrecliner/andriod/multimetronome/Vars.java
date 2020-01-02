@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,17 +11,16 @@ import java.util.List;
 class Vars {
     static SharedPreferences sharedPreferences;
 
-    @SuppressLint("StaticFieldLeak")
+//    @SuppressLint("StaticFieldLeak")
     static Context mContext;
-    @SuppressLint("StaticFieldLeak")
+//    @SuppressLint("StaticFieldLeak")
     static Activity mActivity;
     @SuppressLint("StaticFieldLeak")
     static MetroAdapter metroAdapter;
-    static Utils utils;
+    static Utils utils = new Utils();
     static int mPos;
-    static int loopCount;
     static boolean isRunning;
-    static ArrayList<Metro> metros;
+    static ArrayList<MetroInfo> metroInfos;
 
     static int[] dotRids = {R.id.dot00, R.id.dot01, R.id.dot02, R.id.dot03, R.id.dot04, R.id.dot05, R.id.dot06, R.id.dot07,
             R.id.dot08, R.id.dot09, R.id.dot10, R.id.dot11, R.id.dot12, R.id.dot13, R.id.dot14, R.id.dot15 };
@@ -46,18 +44,4 @@ class Vars {
 
     static List<String> meterLists, tempoLists;
 
-    static int[] rawHana = {0, R.raw.hana_1, R.raw.hana_2, R.raw.hana_3, R.raw.hana_4, R.raw.hana_5, R.raw.hana_6, R.raw.beep_metro};
-    static MediaPlayer [] hanaMedias;
-
-    static int[] rawOne = {0, R.raw.beep_1, R.raw.beep_2, R.raw.beep_3, R.raw.beep_4, R.raw.beep_5, R.raw.beep_6, R.raw.beep_wood};
-    static MediaPlayer [] oneMedias;
-
-    static int[] rawBeep1 = {0, R.raw.beep_beep, R.raw.beep_click, R.raw.beep_wood};
-    static MediaPlayer [] beep1Medias;
-
-    static int[] rawBeep2 = {0, R.raw.beep_notice, R.raw.beep_simple, R.raw.beep_metro};
-    static MediaPlayer [] beep2Medias;
-
-    static float [] soundVolumes;
-    static MediaPlayer[] soundMedias;
 }

@@ -2,9 +2,9 @@ package com.urrecliner.andriod.multimetronome;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.media.MediaPlayer;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -14,12 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import static com.urrecliner.andriod.multimetronome.Vars.beep1Medias;
-import static com.urrecliner.andriod.multimetronome.Vars.beep2Medias;
 import static com.urrecliner.andriod.multimetronome.Vars.dotRids;
-import static com.urrecliner.andriod.multimetronome.Vars.hanaMedias;
 import static com.urrecliner.andriod.multimetronome.Vars.isRunning;
-import static com.urrecliner.andriod.multimetronome.Vars.loopCount;
 import static com.urrecliner.andriod.multimetronome.Vars.mActivity;
 import static com.urrecliner.andriod.multimetronome.Vars.mContext;
 import static com.urrecliner.andriod.multimetronome.Vars.mPos;
@@ -27,10 +23,7 @@ import static com.urrecliner.andriod.multimetronome.Vars.meterBeats;
 import static com.urrecliner.andriod.multimetronome.Vars.meterLists;
 import static com.urrecliner.andriod.multimetronome.Vars.meterTexts;
 import static com.urrecliner.andriod.multimetronome.Vars.metroAdapter;
-import static com.urrecliner.andriod.multimetronome.Vars.metros;
-import static com.urrecliner.andriod.multimetronome.Vars.oneMedias;
-import static com.urrecliner.andriod.multimetronome.Vars.soundMedias;
-import static com.urrecliner.andriod.multimetronome.Vars.soundVolumes;
+import static com.urrecliner.andriod.multimetronome.Vars.metroInfos;
 import static com.urrecliner.andriod.multimetronome.Vars.tempoLists;
 import static com.urrecliner.andriod.multimetronome.Vars.tempos;
 import static com.urrecliner.andriod.multimetronome.Vars.utils;
@@ -39,61 +32,42 @@ import static com.urrecliner.andriod.multimetronome.Vars.utils;
 public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHolder> {
 
 //    final static String logId = "adapter";
-    private ImageView [] mivDots;
-    private int [] tagDots;
-    private int interval;
+    static ImageView [] mImageView;
+    static int [] tagIcons;
     private ImageView nowGo, nowStop;
-    private TypedArray soundTypes;
 
     MetroAdapter() {
-        mivDots = new ImageView[dotRids.length];
-        tagDots = new int[dotRids.length];
-        soundTypes = mActivity.getResources().obtainTypedArray(R.array.soundType);
+        mImageView = new ImageView[dotRids.length];
+        tagIcons = new int[dotRids.length];
     }
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivHanaBeep;
-        TextView tvMeter;
+        TextView tvBeat;
         TextView tvTempo;
         ImageView ivGo, ivStop;
         ImageView [] ivDots = new ImageView[dotRids.length];
         ConstraintLayout constraintLayout;
         int wheelIdx;
 
-
         CustomViewHolder(View view) {
             super(view);
             for (int i = 0; i < dotRids.length; i++) {
                 ivDots[i] = itemView.findViewById(dotRids[i]);
             }
-//            utils.log(logId," view"+view.toString());
-            ivHanaBeep = view.findViewById(R.id.hanaBeep);
-            ivHanaBeep.setOnClickListener(new View.OnClickListener() {
+            tvBeat = view.findViewById(R.id.beatIndex);
+            tvBeat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     stopBeatPlay();
                     mPos = getAdapterPosition();
-                    int hanaBeep = (metros.get(mPos).getHanaBeep() + 1) % 4;
-                    metros.get(mPos).setHanaBeep(hanaBeep);
-                    utils.saveSharedPrefTables();
-                    ivHanaBeep.setImageResource(soundTypes.getResourceId(hanaBeep, 0));
-                    ivHanaBeep.invalidate();
-                }
-            });
-
-            tvMeter = view.findViewById(R.id.meter);
-            tvMeter.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    stopBeatPlay();
-                    mPos = getAdapterPosition();
-                    final Metro metro = metros.get(mPos);
+                    final MetroInfo metroInfo = metroInfos.get(mPos);
                     android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(mActivity);
                     View theView = View.inflate(mContext, R.layout.wheel_view, null);
                     WheelView wV = theView.findViewById(R.id.wheel);
                     wV.setItems(meterLists);
-                    wV.selectIndex(metro.getMeter());
+                    wV.selectIndex(metroInfo.getBeatIndex());
                     wV.setOnWheelItemSelectedListener(new WheelView.OnWheelItemSelectedListener() {
                         @Override
                         public void onWheelItemSelected(WheelView wheelView, int position) {
@@ -108,10 +82,10 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                             .setPositiveButton("이 박자로 하지요",new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    metros.get(mPos).setMeter(wheelIdx);
+                                    metroInfos.get(mPos).setBeatIndex(wheelIdx);
                                     utils.saveSharedPrefTables();
-                                    tvMeter.setText(meterTexts[wheelIdx]);
-                                    tvMeter.invalidate();
+                                    tvBeat.setText(meterTexts[wheelIdx]);
+                                    tvBeat.invalidate();
                                     metroAdapter.notifyItemChanged(mPos);
                                 }
                             })
@@ -137,12 +111,12 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                 public void onClick(View view) {
                     stopBeatPlay();
                     mPos = getAdapterPosition();
-                    final Metro metro = metros.get(mPos);
+                    final MetroInfo metroInfo = metroInfos.get(mPos);
                     android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(mActivity);
                     View theView = View.inflate(mContext, R.layout.wheel_view, null);
                     WheelView wV = theView.findViewById(R.id.wheel);
                     wV.setItems(tempoLists);
-                    int tempo = metro.getTempo();
+                    int tempo = metroInfo.getTempo();
                     for (int i = 0; i < tempos.length; i++)
                         if (tempos[i] == tempo)
                             wV.selectIndex(i);
@@ -163,11 +137,12 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
                                 public void onClick(DialogInterface dialog, int which) {
                                     String s;
                                     int val = tempos[wheelIdx];
-                                    metros.get(mPos).setTempo(val);
+                                    metroInfos.get(mPos).setTempo(val);
                                     utils.saveSharedPrefTables();
                                     s = ""+val;
                                     tvTempo.setText(s);
                                     tvTempo.invalidate();
+                                    metroAdapter.notifyItemChanged(mPos);
                                 }
                             })
                             .setNegativeButton("아니", new DialogInterface.OnClickListener() {
@@ -190,18 +165,17 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
             ivGo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+//                    metronomeTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[])null);
                     mPos = getAdapterPosition();
                     for (int idx = 0; idx < dotRids.length; idx++) {
                         ivDots[idx] = itemView.findViewById(dotRids[idx]);
-                        mivDots[idx] = itemView.findViewById(dotRids[idx]);
+                        mImageView[idx] = itemView.findViewById(dotRids[idx]);
                     }
-                    buildTagDots(metros.get(mPos).getMeter());
                     isRunning = true;
                     ivGo.setVisibility(View.GONE);
                     ivStop.setVisibility(View.VISIBLE);
                     nowGo = ivGo;
                     nowStop = ivStop;
-                    setupSoundTable();
                     startBeatPlay();
                 }
             });
@@ -225,77 +199,66 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
         }
     }
 
-    private void setupSoundTable() {
 
-        int hanaBeep = metros.get(mPos).getHanaBeep();
-        int meter = metros.get(mPos).getMeter();
-        loopCount = meterBeats[meter].length;
-        interval = 60000 / metros.get(mPos).getTempo();
-        soundMedias = new MediaPlayer[loopCount];
-        soundVolumes = new float[loopCount];
-        switch (hanaBeep) {
-            case 0:
-            case 1:
-                setupOneHana(meter, hanaBeep);
+    static Handler getHandler() {
+        return new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                blinkDots(msg.obj.toString());
+            }
+        };
+    }
+
+    private static ImageView iV = null;
+    private static int iCon = 0;
+    private static void blinkDots (String msgText) {
+        String msgHead = msgText.substring(0, 1);
+        switch (msgHead) {
+            case "s":
+                if (iV != null) {
+                    iV.setImageResource(iCon);
+                    iV.invalidate();
+                }
+                int pos = Integer.parseInt(msgText.substring(1));
+                iV = mImageView[pos];
+                iV.setImageResource(R.drawable.dot_now);
+                iCon = tagIcons[pos];
+                iV.invalidate();
                 break;
-            case 2:
-            case 3:
-                setupBeep12(meter, hanaBeep);
+            case "x":
+                if (iV != null) {
+                    iV.setImageResource(iCon);
+                    iV.invalidate();
+                }
+                iV = null;
+
                 break;
         }
     }
 
-    private void setupOneHana(int meter, int hanaBeep) {
-        for (int i = 0; i < loopCount; i++) {
-            int dot = meterBeats[meter][i];
-            if (dot > 10) {
-                soundMedias[i] = (hanaBeep == 0) ? hanaMedias[dot - 10] : oneMedias[dot - 10];
-                soundVolumes[i] = highVolume;
-            }
-            else {
-                soundMedias[i] = (hanaBeep == 0) ? hanaMedias[dot] : oneMedias[dot];
-                soundVolumes[i] = lowVolume;
-            }
-        }
+    @Override
+    public int getItemCount() {
+        return (null != metroInfos ? metroInfos.size() : 0);
     }
 
-    private void setupBeep12(int meter, int hanaBeep) {
-        for (int i = 0; i < loopCount; i++) {
-            int dot = meterBeats[meter][i];
-            if (dot == 11) {
-                soundMedias[i] = (hanaBeep == 2) ? beep1Medias[1] : beep2Medias[1];
-                soundVolumes[i] = highVolume;
-            }
-            else if (dot == 12 || dot == 13 || dot == 14) {
-                soundMedias[i] = (hanaBeep == 2) ? beep1Medias[2] : beep2Medias[2];
-                soundVolumes[i] = highVolume;
-            }
-            else {
-                soundMedias[i] = (hanaBeep == 2) ? beep1Medias[3] : beep2Medias[3];
-                soundVolumes[i] = lowVolume;
-            }
-        }
-    }
-
-//    private final float highVolume = (float) (1 - (Math.log(1) / Math.log(10)));
-//    private final float lowVolume = (float) (1 - (Math.log(4) / Math.log(10)));
-    private final float highVolume = 1.0f;
-    private final float lowVolume = 0.4f;
 
     private BeatPlay beatPlay = null;
-    private void startBeatPlay() {
+    private synchronized void startBeatPlay() {
+
+        MetroInfo metroInfo = metroInfos.get(mPos);
+        buildTagDots(metroInfo.getBeatIndex());
         nowGo.setEnabled(false);
-        beatPlay = new BeatPlay(interval, tagDots, mivDots);
-        beatPlay.start();
+        beatPlay = new BeatPlay(metroInfo, tagIcons, mImageView);
+        beatPlay.execute();
         nowGo.setEnabled(true);
     }
 
     void stopBeatPlay() {
         if (isRunning) {
-            beatPlay.interrupt();
+            beatPlay.stop();
             nowGo.setImageResource(R.mipmap.go_green);
             metroAdapter.notifyItemChanged(mPos);
-//            utils.log("mPos "+mPos,">> "+metros.get(mPos).getMeter());
+//            utils.log("mPos "+mPos,">> "+metroInfos.get(mPos).getBeatIndex());
             isRunning = false;
             nowStop.setVisibility(View.GONE);
             nowGo.setVisibility(View.VISIBLE);
@@ -304,10 +267,10 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
 
     private void confirmDelete(int position) {
         final int pos = position;
-        Metro metro = metros.get(position);
-        String s = "삭제하려면 [필요없슈] 를 누르세요 \n"+meterTexts[metro.getMeter()]+" tempo("+ metro.getTempo()+")";
+        MetroInfo metroInfo = metroInfos.get(position);
+        String s = "삭제하려면 [필요없슈] 를 누르세요 \n"+meterTexts[metroInfo.getBeatIndex()]+" tempo("+ metroInfo.getTempo()+")";
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-        builder.setTitle("Delete Metronome?");
+        builder.setTitle("Delete Metro_nome?");
         builder.setMessage(s);
         builder.setPositiveButton("필요없슈",
                 new DialogInterface.OnClickListener() {
@@ -324,9 +287,9 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
     }
 
     private void removeItemView(int position) {
-        metros.remove(position);
+        metroInfos.remove(position);
         metroAdapter.notifyItemRemoved(position);
-        metroAdapter.notifyItemRangeChanged(position, metros.size());
+        metroAdapter.notifyItemRangeChanged(position, metroInfos.size());
     }
 
     @Override
@@ -341,10 +304,10 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int pos) {
 
         int dotMax = dotRids.length;
-        Metro metro = metros.get(pos);
-        int meter = metro.getMeter();
-        int hanaBeep = metro.getHanaBeep();
-        int tempo = metro.getTempo();
+        MetroInfo metroInfo = metroInfos.get(pos);
+        int meter = metroInfo.getBeatIndex();
+        int hanaBeep = metroInfo.getHanaBeep();
+        int tempo = metroInfo.getTempo();
         int idx;
 
         int color = (pos%2 == 0) ? Color.parseColor("#EFF0F1") : Color.parseColor("#eddada");
@@ -352,37 +315,33 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
         buildTagDots(meter);
         int size = meterBeats[meter].length;
         for (idx = 0; idx < size; idx++) {
-            holder.ivDots[idx].setImageResource(tagDots[idx]);
+            holder.ivDots[idx].setImageResource(tagIcons[idx]);
             holder.ivDots[idx].setVisibility(View.VISIBLE);
         }
         while (idx < dotMax) {
             holder.ivDots[idx].setVisibility(View.GONE);
             idx++;
         }
-        holder.ivHanaBeep.setImageResource(soundTypes.getResourceId(hanaBeep, 0));
-        holder.tvMeter.setText(meterTexts[meter]);
+        holder.tvBeat.setText(meterTexts[meter]);
         holder.tvTempo.setText(String.valueOf(tempo));
         holder.ivStop.setVisibility(View.GONE);
     }
 
     private void buildTagDots(int meter) {
-        int size = meterBeats[meter].length;
+        int [] beats = meterBeats[meter];
+        int size = beats.length;
         for (int idx = 0; idx < size; idx++) {
-            int dot = meterBeats[meter][idx];
+            int dot = beats[idx];
             if (dot == 11) {
-                tagDots[idx] = R.mipmap.circle_red_big;
+                tagIcons[idx] = R.drawable.dot_red_big;
             }
             else if (dot == 12 || dot == 13 || dot == 14) {
-                tagDots[idx] = R.mipmap.circle_red_yellow;
+                tagIcons[idx] = R.drawable.dot_red_small;
             }
             else {
-                tagDots[idx] = R.mipmap.circle_pink;
+                tagIcons[idx] = R.drawable.dot_pink;
             }
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return (null != metros ? metros.size() : 0);
-    }
 }

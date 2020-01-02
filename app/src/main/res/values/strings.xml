@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Multi Metronome</string>
     <string name="none">none</string>
-    <string name="meter">3/4</string>
+    <string name="beatIndex">3/4</string>
+
+
 </resources>
