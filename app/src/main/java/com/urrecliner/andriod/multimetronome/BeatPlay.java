@@ -3,51 +3,87 @@ package com.urrecliner.andriod.multimetronome;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
-import android.widget.ImageView;
 
-import static com.urrecliner.andriod.multimetronome.Vars.dotRids;
+import static com.urrecliner.andriod.multimetronome.Vars.meterBeats;
 
 class BeatPlay extends AsyncTask<Void, Void, String> {
-    private int interval;
-    ImageView onViewDot, offViewDot;
-    private static int tagDot, oldDot;
-    private int colIndex;
-    private int [] tagDots = new int[dotRids.length];
-    private ImageView [] mivDots = new ImageView[dotRids.length];
-    MetroInfo metroInfo;
+
+    private MetroInfo metroInfo;
+    private double bpm;
+    private int silence;
+    private int [] beats;
+    private final int tick = 1000; // samples of tick
+    private final int SAMPLE_RATE = 8000;
+
+    private AudioGenerator audioGenerator = new AudioGenerator(SAMPLE_RATE);
     private Handler mHandler;
-    Metro_nome metro_nnome;
-    private short bpm = 100;
-    private short note_VValue = 4;
-    private short beats = 4;
+    private double[] highSounds, midSounds, lowSounds, silenceSoundArray;
+    private boolean isRunning;
 
-
-    public BeatPlay(MetroInfo metroInfo, int [] tagDots, ImageView [] mivDots) {
+    BeatPlay(MetroInfo metroInfo) {
         this.metroInfo = metroInfo;
-        System.arraycopy(tagDots, 0, this.tagDots, 0, tagDots.length );
-        System.arraycopy(mivDots, 0, this.mivDots, 0, mivDots.length );
-
-        offViewDot = null;
-        colIndex = 0;
+        audioGenerator.createPlayer();
         mHandler = MetroAdapter.getHandler();
-        metro_nnome = new Metro_nome(mHandler);
+        isRunning = true;
     }
 
     protected String doInBackground(Void... params) {
-        metro_nnome.play(metroInfo);
+        beats = meterBeats[metroInfo.getBeatIndex()];
+        bpm = metroInfo.getTempo();
+        calcSilence();
+        int colIndex = 0;
+        do {
+            int beatType = beats[colIndex];
+            switch (beatType) {
+                case 11:
+                    audioGenerator.writeSound(highSounds);
+                    break;
+                case 12:
+                case 13:
+                case 14:
+                    audioGenerator.writeSound(midSounds);
+                    break;
+                default:
+                    audioGenerator.writeSound(lowSounds);
+            }
+            Message msg = new Message();
+            msg.obj = "s"+colIndex;
+            mHandler.sendMessage(msg);
+            audioGenerator.writeSound(silenceSoundArray);
+            colIndex++;
+            if(colIndex >= beats.length)
+                colIndex = 0;
+        } while(isRunning);
         return null;
     }
 
-    public void stop() {
-        if (metro_nnome != null) {
-            metro_nnome.stop();
-            metro_nnome = null;
-            Message msg = new Message();
-          msg.obj = "x";
-            mHandler.sendMessage(msg);
-        }
+    void stop() {
+        isRunning = false;
+        audioGenerator.destroyAudioTrack();
+        Message msg = new Message();
+        msg.obj = "x0";
+        mHandler.sendMessage(msg);
     }
 
-    int prevPos = -1;
+    private void calcSilence() {
+        double highFreq = 4440;
+        double midFreq = 2440;
+        double lowFreq = 8440;
 
+        silence = (int) ((SAMPLE_RATE*60/bpm)-tick);
+        highSounds = new double[this.tick];
+        midSounds = new double[this.tick];
+        lowSounds = new double[this.tick];
+        silenceSoundArray = new double[this.silence];
+        double[] highs = audioGenerator.getSineWave(this.tick, SAMPLE_RATE, highFreq);
+        double[] mids = audioGenerator.getSineWave(this.tick, SAMPLE_RATE, midFreq);
+        double[] lows = audioGenerator.getSineWave(this.tick, SAMPLE_RATE, lowFreq);
+        for(int i=0;i<this.tick;i++) {
+            highSounds[i] = highs[i];
+            midSounds[i] = mids[i];
+            lowSounds[i] = lows[i];
+        }
+        for(int i=0;i<silence;i++)
+            silenceSoundArray[i] = 0;
+    }
 }

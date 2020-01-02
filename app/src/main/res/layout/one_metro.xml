@@ -5,8 +5,8 @@
     android:id="@+id/oneMetro"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="8dp"
-    android:paddingBottom="2dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="4dp"
     tools:context=".MainActivity">
 
     <ImageView
@@ -207,8 +207,8 @@
 
     <ImageView
         android:id="@+id/go"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:contentDescription="@string/none"
         android:src="@mipmap/go_green"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -221,6 +221,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:contentDescription="@string/none"
+        android:layout_margin="12dp"
         android:src="@mipmap/stop_now"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/go"

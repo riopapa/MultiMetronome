@@ -2,22 +2,12 @@ package com.urrecliner.andriod.multimetronome;
 
 class MetroInfo {
 
-    private int hanaBeep;
     private int beatIndex;
     private int tempo;
 
-    MetroInfo(int beatIndex, int tempo, int hanaBeep) {
+    MetroInfo(int beatIndex, int tempo) {
         this.beatIndex = beatIndex;
         this.tempo = tempo;
-        this.hanaBeep = hanaBeep;
-    }
-
-    int getHanaBeep() {
-        return hanaBeep;
-    }
-
-    void setHanaBeep(int hanaBeep) {
-        this.hanaBeep = hanaBeep;
     }
 
     int getBeatIndex() {

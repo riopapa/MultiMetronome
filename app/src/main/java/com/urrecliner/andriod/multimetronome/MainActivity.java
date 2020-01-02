@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-                MetroInfo metroInfo = new MetroInfo(3,84, 1);
+                MetroInfo metroInfo = new MetroInfo(3,84);
                 metroInfos.add(metroInfo);
                 metroAdapter.notifyItemInserted(metroInfos.size());
                 metroAdapter.notifyItemRangeChanged(metroInfos.size(), metroInfos.size());

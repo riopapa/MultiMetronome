@@ -43,7 +43,6 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView ivHanaBeep;
         TextView tvBeat;
         TextView tvTempo;
         ImageView ivGo, ivStop;
@@ -165,7 +164,8 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
             ivGo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    metronomeTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[])null);
+                    if (isRunning)
+                        return;
                     mPos = getAdapterPosition();
                     for (int idx = 0; idx < dotRids.length; idx++) {
                         ivDots[idx] = itemView.findViewById(dotRids[idx]);
@@ -248,7 +248,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
         MetroInfo metroInfo = metroInfos.get(mPos);
         buildTagDots(metroInfo.getBeatIndex());
         nowGo.setEnabled(false);
-        beatPlay = new BeatPlay(metroInfo, tagIcons, mImageView);
+        beatPlay = new BeatPlay(metroInfo);
         beatPlay.execute();
         nowGo.setEnabled(true);
     }
@@ -268,11 +268,11 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
     private void confirmDelete(int position) {
         final int pos = position;
         MetroInfo metroInfo = metroInfos.get(position);
-        String s = "삭제하려면 [필요없슈] 를 누르세요 \n"+meterTexts[metroInfo.getBeatIndex()]+" tempo("+ metroInfo.getTempo()+")";
+        String s = "삭제하려면 [그래요] 를 누르세요 \n"+meterTexts[metroInfo.getBeatIndex()]+" tempo("+ metroInfo.getTempo()+")";
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-        builder.setTitle("Delete Metro_nome?");
+        builder.setTitle("이거 날려요 ?");
         builder.setMessage(s);
-        builder.setPositiveButton("필요없슈",
+        builder.setPositiveButton("그래요",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         removeItemView(pos);
@@ -305,15 +305,14 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
 
         int dotMax = dotRids.length;
         MetroInfo metroInfo = metroInfos.get(pos);
-        int meter = metroInfo.getBeatIndex();
-        int hanaBeep = metroInfo.getHanaBeep();
+        int beatIndex = metroInfo.getBeatIndex();
         int tempo = metroInfo.getTempo();
         int idx;
 
         int color = (pos%2 == 0) ? Color.parseColor("#EFF0F1") : Color.parseColor("#eddada");
         holder.constraintLayout.setBackgroundColor(color);
-        buildTagDots(meter);
-        int size = meterBeats[meter].length;
+        buildTagDots(beatIndex);
+        int size = meterBeats[beatIndex].length;
         for (idx = 0; idx < size; idx++) {
             holder.ivDots[idx].setImageResource(tagIcons[idx]);
             holder.ivDots[idx].setVisibility(View.VISIBLE);
@@ -322,7 +321,7 @@ public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHo
             holder.ivDots[idx].setVisibility(View.GONE);
             idx++;
         }
-        holder.tvBeat.setText(meterTexts[meter]);
+        holder.tvBeat.setText(meterTexts[beatIndex]);
         holder.tvTempo.setText(String.valueOf(tempo));
         holder.ivStop.setVisibility(View.GONE);
     }
