@@ -18,7 +18,6 @@ public class AudioGenerator {
     public AudioGenerator(int sampleRate) {
     	this.sampleRate = sampleRate;
     }
-    
     public double[] getSineWave(int samples,int sampleRate,double frequencyOfTone) {
     	double[] sample = new double[samples];
         for (int i = 0; i < samples; i++) {
@@ -26,7 +25,19 @@ public class AudioGenerator {
         }
 		return sample;
     }
-    
+
+    // 1000,        8000,           2440 ~ 8440
+    public double[] getSine2Wave(int samples,int sampleRate,double frequencyOfTone) {
+        int halfSample = samples/4;
+        double halfFreq = frequencyOfTone / 8;
+        double[] sample = new double[samples+halfSample];
+        for (int i = 0; i < samples; i++) {
+            sample[i] = Math.sin(2 * Math.PI * i / (sampleRate/frequencyOfTone))
+                    - Math.sin(2 * Math.PI * (i+halfFreq) / (sampleRate/frequencyOfTone))/4;
+        }
+        return sample;
+    }
+
     public byte[] get16BitPcm(double[] samples) {
     	byte[] generatedSound = new byte[2 * samples.length];
     	int index = 0;

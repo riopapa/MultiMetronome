@@ -6,9 +6,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.urrecliner.andriod.multimetronome.Vars.mActivity;
 import static com.urrecliner.andriod.multimetronome.Vars.mContext;
@@ -37,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLinearLayoutManager);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         utils = new Utils();
 
@@ -54,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 //        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
 //                mLinearLayoutManager.getOrientation());
 //        recyclerView.addItemDecoration(dividerItemDecoration);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
     }
 
@@ -84,4 +90,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+
+    final long BACK_DELAY = 3000;
+    long backKeyPressedTime;
+    @Override
+    public void onBackPressed() {
+
+        if(System.currentTimeMillis()<backKeyPressedTime+BACK_DELAY){
+            finish();
+            new Timer().schedule(new TimerTask() {
+                public void run() {
+                    finishAffinity();
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                    System.exit(0);
+                }
+            }, 500);
+        }
+        Toast.makeText(this, "Press BackKey again to quit",Toast.LENGTH_SHORT).show();
+        backKeyPressedTime = System.currentTimeMillis();
+    }
+
 }

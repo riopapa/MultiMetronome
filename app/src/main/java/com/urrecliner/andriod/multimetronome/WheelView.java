@@ -307,7 +307,6 @@ public class WheelView extends View implements GestureDetector.OnGestureListener
 					canvas.drawText(temp, 0, temp.length(), x, mHeight - mBottomSpace, mMarkTextPaint);
 				}
 			}
-
 			x += mIntervalDis;
 		}
 	}
@@ -340,12 +339,12 @@ public class WheelView extends View implements GestureDetector.OnGestureListener
 		}
 	}
 
-	public void setAdditionCenterMark(String additionCenterMark) {
-		mAdditionCenterMark = additionCenterMark;
-		calcIntervalDis();
-		invalidate();
-	}
-
+//	public void setAdditionCenterMark(String additionCenterMark) {
+//		mAdditionCenterMark = additionCenterMark;
+//		calcIntervalDis();
+//		invalidate();
+//	}
+//
 	private void autoSettle() {
 		int sx = getScrollX();
 		float dx = mCenterIndex * mIntervalDis - sx - mMaxOverScrollDistance;
@@ -584,19 +583,19 @@ public class WheelView extends View implements GestureDetector.OnGestureListener
 			max = in.readInt();
 		}
 
-		@Override
-		public void writeToParcel(Parcel out, int flags) {
-			super.writeToParcel(out, flags);
-			out.writeInt(index);
-			out.writeInt(min);
-			out.writeInt(max);
-		}
-
-		@Override
-		public String toString() {
-			return "WheelView.SavedState{"
-					+ Integer.toHexString(System.identityHashCode(this))
-					+ " index=" + index + " min=" + min + " max=" + max + "}";
-		}
+//		@Override
+//		public void writeToParcel(Parcel out, int flags) {
+//			super.writeToParcel(out, flags);
+//			out.writeInt(index);
+//			out.writeInt(min);
+//			out.writeInt(max);
+//		}
+//
+//		@Override
+//		public String toString() {
+//			return "WheelView.SavedState{"
+//					+ Integer.toHexString(System.identityHashCode(this))
+//					+ " index=" + index + " min=" + min + " max=" + max + "}";
+//		}
 	}
 }
