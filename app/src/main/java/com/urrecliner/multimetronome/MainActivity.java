@@ -1,4 +1,4 @@
-package com.urrecliner.andriod.multimetronome;
+package com.urrecliner.multimetronome;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,15 +14,15 @@ import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.urrecliner.andriod.multimetronome.Vars.mActivity;
-import static com.urrecliner.andriod.multimetronome.Vars.mContext;
-import static com.urrecliner.andriod.multimetronome.Vars.meterLists;
-import static com.urrecliner.andriod.multimetronome.Vars.meterTexts;
-import static com.urrecliner.andriod.multimetronome.Vars.metroAdapter;
-import static com.urrecliner.andriod.multimetronome.Vars.metroInfos;
-import static com.urrecliner.andriod.multimetronome.Vars.tempoLists;
-import static com.urrecliner.andriod.multimetronome.Vars.tempos;
-import static com.urrecliner.andriod.multimetronome.Vars.utils;
+import static com.urrecliner.multimetronome.Vars.mActivity;
+import static com.urrecliner.multimetronome.Vars.mContext;
+import static com.urrecliner.multimetronome.Vars.meterLists;
+import static com.urrecliner.multimetronome.Vars.meterTexts;
+import static com.urrecliner.multimetronome.Vars.metroAdapter;
+import static com.urrecliner.multimetronome.Vars.metroInfos;
+import static com.urrecliner.multimetronome.Vars.tempoLists;
+import static com.urrecliner.multimetronome.Vars.tempos;
+import static com.urrecliner.multimetronome.Vars.utils;
 
 public class MainActivity extends AppCompatActivity {
 

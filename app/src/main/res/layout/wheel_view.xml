@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.urrecliner.andriod.multimetronome.WheelView
+    <com.urrecliner.multimetronome.WheelView
         android:id="@+id/wheel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

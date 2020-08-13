@@ -1,10 +1,10 @@
-package com.urrecliner.andriod.multimetronome;
+package com.urrecliner.multimetronome;
 
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 
-import static com.urrecliner.andriod.multimetronome.Vars.meterBeats;
+import static com.urrecliner.multimetronome.Vars.meterBeats;
 
 class BeatPlay extends AsyncTask<Void, Void, String> {
 

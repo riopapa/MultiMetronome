@@ -1,4 +1,4 @@
-package com.urrecliner.andriod.multimetronome;
+package com.urrecliner.multimetronome;
 
 public enum Beats {
 	one("1"),

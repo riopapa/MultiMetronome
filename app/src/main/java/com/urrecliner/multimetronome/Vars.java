@@ -1,4 +1,4 @@
-package com.urrecliner.andriod.multimetronome;
+package com.urrecliner.multimetronome;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

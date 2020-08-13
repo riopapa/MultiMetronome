@@ -4,7 +4,7 @@
  * which came from here:
  * http://marblemice.blogspot.com/2010/04/generate-and-play-tone-in-android.html
  */
-package com.urrecliner.andriod.multimetronome;
+package com.urrecliner.multimetronome;
 
 import android.media.AudioFormat;
 import android.media.AudioManager;

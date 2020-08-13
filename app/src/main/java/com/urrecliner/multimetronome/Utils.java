@@ -1,4 +1,4 @@
-package com.urrecliner.andriod.multimetronome;
+package com.urrecliner.multimetronome;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -11,9 +11,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.urrecliner.andriod.multimetronome.Vars.mContext;
-import static com.urrecliner.andriod.multimetronome.Vars.metroInfos;
-import static com.urrecliner.andriod.multimetronome.Vars.sharedPreferences;
+import static com.urrecliner.multimetronome.Vars.mContext;
+import static com.urrecliner.multimetronome.Vars.metroInfos;
+import static com.urrecliner.multimetronome.Vars.sharedPreferences;
 
 
 class Utils {

@@ -1,4 +1,4 @@
-package com.urrecliner.andriod.multimetronome;
+package com.urrecliner.multimetronome;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -14,19 +14,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import static com.urrecliner.andriod.multimetronome.Vars.dotRids;
-import static com.urrecliner.andriod.multimetronome.Vars.isRunning;
-import static com.urrecliner.andriod.multimetronome.Vars.mActivity;
-import static com.urrecliner.andriod.multimetronome.Vars.mContext;
-import static com.urrecliner.andriod.multimetronome.Vars.mPos;
-import static com.urrecliner.andriod.multimetronome.Vars.meterBeats;
-import static com.urrecliner.andriod.multimetronome.Vars.meterLists;
-import static com.urrecliner.andriod.multimetronome.Vars.meterTexts;
-import static com.urrecliner.andriod.multimetronome.Vars.metroAdapter;
-import static com.urrecliner.andriod.multimetronome.Vars.metroInfos;
-import static com.urrecliner.andriod.multimetronome.Vars.tempoLists;
-import static com.urrecliner.andriod.multimetronome.Vars.tempos;
-import static com.urrecliner.andriod.multimetronome.Vars.utils;
+import static com.urrecliner.multimetronome.Vars.dotRids;
+import static com.urrecliner.multimetronome.Vars.isRunning;
+import static com.urrecliner.multimetronome.Vars.mActivity;
+import static com.urrecliner.multimetronome.Vars.mContext;
+import static com.urrecliner.multimetronome.Vars.mPos;
+import static com.urrecliner.multimetronome.Vars.meterBeats;
+import static com.urrecliner.multimetronome.Vars.meterLists;
+import static com.urrecliner.multimetronome.Vars.meterTexts;
+import static com.urrecliner.multimetronome.Vars.metroAdapter;
+import static com.urrecliner.multimetronome.Vars.metroInfos;
+import static com.urrecliner.multimetronome.Vars.tempoLists;
+import static com.urrecliner.multimetronome.Vars.tempos;
+import static com.urrecliner.multimetronome.Vars.utils;
 
 
 public class MetroAdapter extends RecyclerView.Adapter<MetroAdapter.CustomViewHolder> {
